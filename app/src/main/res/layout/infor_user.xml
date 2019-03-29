@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    android:padding="10dp"
+    android:background="#ccc"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:layout_width="wrap_content"
+            android:text="Tên người chơi"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:padding="10dp"
+            android:id="@+id/edt_name_user"
+            android:background="@drawable/bg_edt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_marginTop="10dp"
+            android:text="OK"
+            android:background="@drawable/bg_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

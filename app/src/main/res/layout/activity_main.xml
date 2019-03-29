@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0C91FF"
+    tools:context=".ViewController.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/pb_count"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:max="10"
+            android:progress="10"
+            android:progressDrawable="@drawable/bg_pb" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="100dp"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/img_sound"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/speaker_on"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/img_mute"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/speaker_of" />
+
+            <TextView
+                android:fontFamily="@font/relay_black"
+                android:id="@+id/txt_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="0"
+                android:textColor="@color/colorWhite"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+            <TextSwitcher
+                android:id="@+id/txt_ques"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:inAnimation="@android:anim/slide_in_left"
+                android:outAnimation="@android:anim/slide_out_right"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/btn_true"
+            android:layout_width="200dp"
+            android:layout_height="180dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn"
+            android:src="@drawable/ic_check_black_24dp" />
+
+        <ImageButton
+
+            android:id="@+id/btn_false"
+            android:layout_width="200dp"
+            android:layout_height="180dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn"
+            android:src="@drawable/ic_close_black_24dp" />
+    </LinearLayout>
+</RelativeLayout>
