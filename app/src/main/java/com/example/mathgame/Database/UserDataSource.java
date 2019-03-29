@@ -1,13 +1,11 @@
-package com.example.mathfastgame.Database;
+package com.example.mathgame.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.mathfastgame.Model.User;
+import com.example.mathgame.Model.User;
 
 import java.util.ArrayList;
 

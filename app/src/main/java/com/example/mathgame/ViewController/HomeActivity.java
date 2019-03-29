@@ -1,22 +1,18 @@
-package com.example.mathfastgame.ViewController;
+package com.example.mathgame.ViewController;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.example.mathfastgame.Database.AssetDatabaseOpenHelper;
-import com.example.mathfastgame.Database.UserDataSource;
-import com.example.mathfastgame.Model.User;
-import com.example.mathfastgame.R;
-import com.example.mathfastgame.Util.Util;
-import com.example.mathfastgame.ViewController.Base.BaseActivity;
-import com.example.mathfastgame.ViewController.Rank.RankActivity;
+import com.example.mathgame.Database.AssetDatabaseOpenHelper;
+import com.example.mathgame.Database.UserDataSource;
+import com.example.mathgame.R;
+import com.example.mathgame.Util.Util;
+import com.example.mathgame.ViewController.Base.BaseActivity;
+import com.example.mathgame.ViewController.Rank.RankActivity;
 
-import java.util.Collections;
-import java.util.Comparator;
 
 public class HomeActivity extends BaseActivity {
     ImageButton btnPlay,btnRank,btnInfor;

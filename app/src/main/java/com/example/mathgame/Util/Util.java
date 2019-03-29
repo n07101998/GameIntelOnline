@@ -1,6 +1,8 @@
-package com.example.mathfastgame.Util;
+package com.example.mathgame.Util;
 
-import com.example.mathfastgame.Model.User;
+
+
+import com.example.mathgame.Model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;

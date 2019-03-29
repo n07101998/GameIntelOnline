@@ -1,4 +1,4 @@
-package com.example.mathfastgame.Database;
+package com.example.mathgame.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

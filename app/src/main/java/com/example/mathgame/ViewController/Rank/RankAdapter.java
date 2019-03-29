@@ -1,4 +1,4 @@
-package com.example.mathfastgame.ViewController.Rank;
+package com.example.mathgame.ViewController.Rank;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mathfastgame.Model.User;
-import com.example.mathfastgame.R;
+import com.example.mathgame.Model.User;
+import com.example.mathgame.R;
 
 import java.util.ArrayList;
 

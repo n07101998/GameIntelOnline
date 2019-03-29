@@ -1,4 +1,4 @@
-package com.example.mathfastgame.ViewController;
+package com.example.mathgame.ViewController;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,10 +15,10 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.example.mathfastgame.Database.GameDataSoucre;
-import com.example.mathfastgame.Model.Game;
-import com.example.mathfastgame.R;
-import com.example.mathfastgame.ViewController.Base.BaseActivity;
+import com.example.mathgame.Database.GameDataSoucre;
+import com.example.mathgame.Model.Game;
+import com.example.mathgame.R;
+import com.example.mathgame.ViewController.Base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Random;

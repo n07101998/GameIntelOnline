@@ -1,25 +1,18 @@
-package com.example.mathfastgame.ViewController.Rank;
+package com.example.mathgame.ViewController.Rank;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.example.mathfastgame.Database.UserDataSource;
-import com.example.mathfastgame.Model.User;
-import com.example.mathfastgame.R;
-import com.example.mathfastgame.Util.Util;
-import com.example.mathfastgame.ViewController.HomeActivity;
-import com.example.mathfastgame.ViewController.MainActivity;
+import com.example.mathgame.R;
+import com.example.mathgame.Util.Util;
+import com.example.mathgame.ViewController.HomeActivity;
+import com.example.mathgame.ViewController.MainActivity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class RankActivity extends AppCompatActivity {
     ListView lvRank;

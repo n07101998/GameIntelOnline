@@ -1,4 +1,4 @@
-package com.example.mathfastgame.ViewController;
+package com.example.mathgame.ViewController;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -6,8 +6,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +17,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mathfastgame.Database.UserDataSource;
-import com.example.mathfastgame.Model.User;
-import com.example.mathfastgame.R;
-import com.example.mathfastgame.Util.Util;
+
+import com.example.mathgame.Database.UserDataSource;
+import com.example.mathgame.Model.User;
+import com.example.mathgame.R;
+import com.example.mathgame.Util.Util;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
@@ -76,7 +77,7 @@ public class GameOverActivity extends AppCompatActivity {
         }else {
             processTop();
         }
-        for (int i = 0; i <Util.arrUser.size() ; i++) {
+        for (int i = 0; i < Util.arrUser.size() ; i++) {
             if (point>Util.arrUser.get(i).getPoint()){
                 top=(i+1);
                 txtTop.setText(top+"");

@@ -1,4 +1,4 @@
-package com.example.mathfastgame.Model;
+package com.example.mathgame.Model;
 
 public class User {
     int id;

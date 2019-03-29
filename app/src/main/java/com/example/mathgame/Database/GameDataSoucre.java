@@ -1,15 +1,13 @@
-package com.example.mathfastgame.Database;
+package com.example.mathgame.Database;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.example.mathfastgame.Model.Game;
+import com.example.mathgame.Model.Game;
 
 import java.util.ArrayList;
-
-import static com.example.mathfastgame.Database.AssetDatabaseOpenHelper.DB_NAME;
-import static com.example.mathfastgame.Database.AssetDatabaseOpenHelper.database;
+import static com.example.mathgame.Database.AssetDatabaseOpenHelper.DB_NAME;
+import static com.example.mathgame.Database.AssetDatabaseOpenHelper.database;
 
 public class GameDataSoucre {
     public static String TABLE_NAME="game";
