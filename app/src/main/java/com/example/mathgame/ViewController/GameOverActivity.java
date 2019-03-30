@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.mathgame.Database.UserDataSource;
 import com.example.mathgame.Model.User;
 import com.example.mathgame.R;
 import com.example.mathgame.Util.Util;
@@ -33,10 +32,7 @@ public class GameOverActivity extends AppCompatActivity {
 
     TextView txtPoint,txtTop;
     ImageButton btnReplay,btnBack,btnShare;
-    UserDataSource userDataSource;
     int point;
-    Button btnok;
-    EditText edtNameUser;
     ShareDialog shareDialog;
     int top;
     @Override
@@ -71,12 +67,11 @@ public class GameOverActivity extends AppCompatActivity {
         btnShare=findViewById(R.id.btn_share);
         txtPoint.setText(point+"");
         addEvents();
-        userDataSource=new UserDataSource(this);
-        if (Util.arrUser.size()<=5){
-            addUser();
-        }else {
-            processTop();
-        }
+//        if (Util.arrUser.size()<=5){
+//            addUser();
+//        }else {
+//            processTop();
+//        }
         for (int i = 0; i < Util.arrUser.size() ; i++) {
             if (point>Util.arrUser.get(i).getPoint()){
                 top=(i+1);
@@ -95,40 +90,40 @@ public class GameOverActivity extends AppCompatActivity {
 
     }
 
-    private void processTop() {
-        for (int i = 0; i < 5; i++) {
-            if (point>Util.arrUser.get(i).getPoint()){
-                addUser();
-                break;
+//    private void processTop() {
+//        for (int i = 0; i < 5; i++) {
+//            if (point>Util.arrUser.get(i).getPoint()){
+//                addUser();
+//                break;
+//
+//            }
+//        }
+//    }
 
-            }
-        }
-    }
-
-    private void addUser() {
-        final Dialog dialog=new Dialog(this);
-        dialog.setContentView(R.layout.infor_user);
-        dialog.setCancelable(false);
-        btnok=dialog.findViewById(R.id.btn_ok);
-        edtNameUser=dialog.findViewById(R.id.edt_name_user);
-        dialog.show();
-        btnok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                User user=new User();
-                user.setNameUser(edtNameUser.getText().toString());
-                user.setPoint(point);
-                if (userDataSource.insertUser(user)>0){
-                    Toast.makeText(GameOverActivity.this,"thêm thành công",Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }else {
-                    Toast.makeText(GameOverActivity.this,"xảy ra lỗi",Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
-            }
-        });
-    }
+//    private void addUser() {
+//        final Dialog dialog=new Dialog(this);
+//        dialog.setContentView(R.layout.infor_user);
+//        dialog.setCancelable(false);
+//        btnok=dialog.findViewById(R.id.btn_ok);
+//        edtNameUser=dialog.findViewById(R.id.edt_name_user);
+//        dialog.show();
+//        btnok.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                User user=new User();
+//                user.setNameUser(edtNameUser.getText().toString());
+//                user.setPoint(point);
+//                if (userDataSource.insertUser(user)>0){
+//                    Toast.makeText(GameOverActivity.this,"thêm thành công",Toast.LENGTH_SHORT).show();
+//                    dialog.dismiss();
+//                }else {
+//                    Toast.makeText(GameOverActivity.this,"xảy ra lỗi",Toast.LENGTH_SHORT).show();
+//                    dialog.dismiss();
+//                }
+//            }
+//        });
+//    }
 
     private void addEvents() {
         btnBack.setOnClickListener(new View.OnClickListener() {

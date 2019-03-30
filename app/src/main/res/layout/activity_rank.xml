@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:background="@color/colorPurple"
+    android:gravity="center"
+    android:background="@color/colorPurple1"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,6 +10,7 @@
     android:layout_height="match_parent"
     tools:context=".ViewController.Rank.RankActivity">
     <LinearLayout
+
         android:orientation="vertical"
         android:padding="20dp"
         android:layout_width="match_parent"
@@ -24,10 +26,11 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp" />
             <TextView
+                android:fontFamily="@font/relay_black"
                 android:layout_marginLeft="20dp"
                 android:textSize="30sp"
-                android:textColor="@color/colorWhite"
-                android:text="Rank List"
+                android:textColor="@color/colorWhite1"
+                android:text="Top 5 in the world"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

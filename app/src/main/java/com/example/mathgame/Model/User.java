@@ -1,25 +1,33 @@
 package com.example.mathgame.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class User {
-    int id;
-    int point;
-    String nameUser;
+    @SerializedName("id")
+    @Expose
+    public String id;
+    @SerializedName("username")
+    @Expose
+    public String username;
+    @SerializedName("point")
+    @Expose
+    public int point;
 
-    public User(int id, int point, String nameUser) {
-        this.id = id;
-        this.point = point;
-        this.nameUser = nameUser;
-    }
-
-    public User() {
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getPoint() {
@@ -28,13 +36,5 @@ public class User {
 
     public void setPoint(int point) {
         this.point = point;
-    }
-
-    public String getNameUser() {
-        return nameUser;
-    }
-
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
     }
 }

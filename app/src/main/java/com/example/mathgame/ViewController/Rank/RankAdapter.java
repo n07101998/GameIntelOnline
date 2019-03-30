@@ -69,7 +69,7 @@ public class RankAdapter extends BaseAdapter {
         }
         public void setUpView(User user,int pos){
             txtSTT.setText((pos+1)+"");
-            txtNameUser.setText(user.getNameUser());
+            txtNameUser.setText(user.getUsername());
             txtPoint.setText(user.getPoint()+"");
             if (pos==0){
                 imgCham.setVisibility(View.VISIBLE);

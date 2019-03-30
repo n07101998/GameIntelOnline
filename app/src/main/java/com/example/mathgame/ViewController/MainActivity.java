@@ -18,6 +18,8 @@ import android.widget.ViewSwitcher;
 import com.example.mathgame.Database.GameDataSoucre;
 import com.example.mathgame.Model.Game;
 import com.example.mathgame.R;
+import com.example.mathgame.Util.AppConfig;
+import com.example.mathgame.Util.Util;
 import com.example.mathgame.ViewController.Base.BaseActivity;
 
 import java.util.ArrayList;
@@ -30,7 +32,6 @@ public class MainActivity extends BaseActivity {
     TextSwitcher txtQues;
     TextView txtPoint;
     ImageButton btnTrue, btnFalse;
-    ImageView imgSound,imgMute;
     ArrayList<Game> arrData;
     Random random = new Random();
     int point = 0;
@@ -40,7 +41,6 @@ public class MainActivity extends BaseActivity {
     Timer timer;
     boolean isGameOver=false;
     MediaPlayer mediaPlayer;
-    boolean isSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +53,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void addEvents() {
-        imgMute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isSound=true;
-                imgMute.setVisibility(View.GONE);
-                imgSound.setVisibility(View.VISIBLE);
-            }
-        });
-        imgSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isSound=false;
-                imgMute.setVisibility(View.VISIBLE);
-                imgSound.setVisibility(View.GONE);
-            }
-        });
+
     }
 
     @Override
@@ -97,8 +82,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void init() {
-        imgMute=findViewById(R.id.img_mute);
-        imgSound=findViewById(R.id.img_sound);
         pbCount = findViewById(R.id.pb_count);
         txtQues = findViewById(R.id.txt_ques);
         txtPoint = findViewById(R.id.txt_point);
@@ -123,6 +106,10 @@ public class MainActivity extends BaseActivity {
         txtPoint.setText(point + "");
     }
     void processLogic(String answer){
+        if (mediaPlayer!=null){
+            mediaPlayer.stop();
+            mediaPlayer=null;
+        }
         if (arrData.get(pos).getAnswer().trim().equals(answer)) {
             if(timer != null) {
                 timer.cancel();
@@ -133,17 +120,18 @@ public class MainActivity extends BaseActivity {
             plusPoint();
             pos = random.nextInt(rangeRandom);
             txtQues.setText(arrData.get(pos).getQues());
-            if (mediaPlayer!=null){
-                mediaPlayer.stop();
-                mediaPlayer=null;
-            }
-            if (isSound){
+
+            if (AppConfig.isSound(this)){
                 mediaPlayer=MediaPlayer.create(this,R.raw.score);
                 mediaPlayer.start();
             }
 
 
         }else{
+            if (AppConfig.isSound(this)){
+                mediaPlayer=MediaPlayer.create(this,R.raw.gameover);
+                mediaPlayer.start();
+            }
             isGameOver=true;
             processGameOver();
         }
