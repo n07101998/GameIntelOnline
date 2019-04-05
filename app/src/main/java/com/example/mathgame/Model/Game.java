@@ -1,40 +1,40 @@
 package com.example.mathgame.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Game {
-    int id;
-    String ques;
-    String answer;
+    @SerializedName("id")
+    @Expose
+    public Integer id;
+    @SerializedName("question")
+    @Expose
+    public String question;
+    @SerializedName("answer")
+    @Expose
+    public Integer answer;
 
-    public Game(int id, String ques, String answer) {
-        this.id = id;
-        this.ques = ques;
-        this.answer = answer;
-    }
-
-    public Game() {
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getQues() {
-        return ques;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setQues(String ques) {
-        this.ques = ques;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public String getAnswer() {
+    public Integer getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(Integer answer) {
         this.answer = answer;
     }
 }

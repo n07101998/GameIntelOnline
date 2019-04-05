@@ -1,5 +1,6 @@
 package com.example.mathgame.Network;
 
+import com.example.mathgame.Model.Game;
 import com.example.mathgame.Model.User;
 
 import java.util.ArrayList;
@@ -25,4 +26,8 @@ public interface APIServer {
     @FormUrlEncoded
     @POST("api/insertUser.php")
     Call<String> insertUser(@FieldMap HashMap<String,String> data);
+
+    //lấy câu hỏi
+    @GET("api/getAllQues.php")
+    Call<ArrayList<Game>> getAllQues();
 }

@@ -9,16 +9,17 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.example.mathgame.Database.GameDataSoucre;
 import com.example.mathgame.Model.Game;
+import com.example.mathgame.Network.APIServer;
+import com.example.mathgame.Network.RetrofitClient;
 import com.example.mathgame.R;
 import com.example.mathgame.Util.AppConfig;
+import com.example.mathgame.Util.Util;
 import com.example.mathgame.ViewController.Base.BaseActivity;
 
 import java.util.ArrayList;
@@ -26,16 +27,20 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends BaseActivity {
     ProgressBar pbCount;
     TextSwitcher txtQues;
     TextView txtPoint;
     ImageButton btnTrue, btnFalse;
-    ArrayList<Game> arrData;
+    ArrayList<Game> arrData=new ArrayList<>();
     Random random = new Random();
     int point = 0;
     int pos;
-    int rangeRandom=50;
+    int rangeRandom;
     int count=10;
     Timer timer;
     boolean isGameOver=false;
@@ -55,13 +60,13 @@ public class MainActivity extends BaseActivity {
         btnTrue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processLogic("1");
+                processLogic(1);
             }
         });
         btnFalse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processLogic("0");
+                processLogic(0);
             }
         });
     }
@@ -85,10 +90,30 @@ public class MainActivity extends BaseActivity {
                 return textView;
             }
         });
-        GameDataSoucre gameDataSoucre = new GameDataSoucre(this);
-        arrData = gameDataSoucre.getAllGameData();
-        pos = random.nextInt(rangeRandom);
-        txtQues.setText(arrData.get(pos).getQues());
+        getAllQues();
+
+    }
+
+    private void getAllQues() {
+        Util.showCatLoading().show(getSupportFragmentManager(),"");
+        RetrofitClient.getInstace().create(APIServer.class).getAllQues().enqueue(new Callback<ArrayList<Game>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Game>> call, Response<ArrayList<Game>> response) {
+                Util.showCatLoading().dismiss();
+                arrData.clear();
+                arrData.addAll(response.body());
+                rangeRandom=arrData.size();
+                pos = random.nextInt(rangeRandom);
+                txtQues.setText(arrData.get(pos).getQuestion());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Game>> call, Throwable t) {
+                Util.showCatLoading().dismiss();
+                Util.showToast(t.toString(),MainActivity.this);
+
+            }
+        });
     }
 
     private void init() {
@@ -104,12 +129,12 @@ public class MainActivity extends BaseActivity {
         point++;
         txtPoint.setText(point + "");
     }
-    void processLogic(String answer){
+    void processLogic(int answer){
         if (mediaPlayer!=null){
             mediaPlayer.stop();
             mediaPlayer=null;
         }
-        if (arrData.get(pos).getAnswer().trim().equals(answer)) {
+        if (arrData.get(pos).getAnswer()==answer) {
             if(timer != null) {
                 timer.cancel();
                 timer = null;
@@ -118,7 +143,7 @@ public class MainActivity extends BaseActivity {
             processCountDown();
             plusPoint();
             pos = random.nextInt(rangeRandom);
-            txtQues.setText(arrData.get(pos).getQues());
+            txtQues.setText(arrData.get(pos).getQuestion());
 
             if (AppConfig.isSound(this)){
                 mediaPlayer=MediaPlayer.create(this,R.raw.score);
