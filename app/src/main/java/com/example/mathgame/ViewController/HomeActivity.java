@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,24 +36,19 @@ import retrofit2.Response;
 
 public class HomeActivity extends BaseActivity {
     ImageButton btnPlay, btnRank, btnInfor;
-    CatLoadingView dialogLoading;
     boolean isNetwok;
-    View view;
     ImageView imgSound, imgMute;
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            switch (action)
-            {
-                case WifiManager.WIFI_STATE_CHANGED_ACTION:
-                    int extra = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE,0);
-                    if(extra==WifiManager.WIFI_STATE_ENABLED)
-                    {
-                        isNetwok=true;
-                    }else {
-                        isNetwok=false;
+            switch (action) {
+                case ConnectivityManager.CONNECTIVITY_ACTION:
+                    if (isNetworkConnected()) {
+                        isNetwok = true;
+                    } else {
+                        isNetwok = false;
                     }
                     break;
             }
@@ -70,7 +66,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setUpReciever() {
-        IntentFilter filter = new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(receiver, filter);
     }
 
@@ -138,50 +134,24 @@ public class HomeActivity extends BaseActivity {
         btnRank = findViewById(R.id.btn_rank);
         AssetDatabaseOpenHelper db = new AssetDatabaseOpenHelper(this);
         db.processCopy();
-        if (Util.arrUser==null || Util.arrUser.size()==0){
-            Util.arrUser = getTopUser();
-            Util.SortPoint();
-        }
+
+
         Log.d("fffr", "init: ");
     }
 
-    private ArrayList<User> getTopUser() {
-        dialogLoading = new CatLoadingView();
-        dialogLoading.show(getSupportFragmentManager(), "");
-        final ArrayList<User> arrData = new ArrayList<>();
-        RetrofitClient.getInstace().create(APIServer.class).getTopUser().enqueue(new Callback<ArrayList<User>>() {
-            @Override
-            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                isNetwok = true;
-                dialogLoading.dismiss();
-                arrData.addAll(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                isNetwok = false;
-                dialogLoading.dismiss();
-                warningNotNetwok();
-                Log.d("ffr", "onFailure: " + t.toString());
-
-            }
-        });
-        return arrData;
-    }
 
     private void warningNotNetwok() {
-        Toast toast = new Toast(HomeActivity.this);
-        toast.setView(LayoutInflater.from(HomeActivity.this).inflate(R.layout.toast_layout, null));
-        toast.setDuration(Toast.LENGTH_LONG);
-        view = toast.getView();
-        TextView txtmsg = toast.getView().findViewById(R.id.txt_msg);
-        txtmsg.setText("Không có kết nối internet!");
-        toast.show();
+        Util.showToast("Không có kết nối internet!",this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }

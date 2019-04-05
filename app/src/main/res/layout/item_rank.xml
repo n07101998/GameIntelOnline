@@ -19,6 +19,7 @@
             android:layout_height="30dp" />
         <TextView
 
+            android:fontFamily="@font/relay_black"
             android:layout_weight="1"
             android:id="@+id/txt_stt"
             android:textColor="@color/colorBlack1"
@@ -27,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:fontFamily="@font/relay_black"
             android:layout_weight="3"
             android:id="@+id/txt_name_user"
             android:textColor="@color/colorBlack1"
@@ -35,6 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <TextView
+            android:fontFamily="@font/relay_black"
             android:gravity="center"
             android:layout_weight="2"
             android:id="@+id/txt_point"

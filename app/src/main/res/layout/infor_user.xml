@@ -3,8 +3,10 @@
 
     android:padding="10dp"
     android:background="#ccc"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -15,12 +17,15 @@
             android:layout_width="wrap_content"
             android:text="Tên người chơi"
             android:layout_height="wrap_content" />
+
         <EditText
+            android:maxLength="10"
             android:padding="10dp"
             android:id="@+id/edt_name_user"
             android:background="@drawable/bg_edt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/btn_ok"
             android:layout_marginTop="10dp"

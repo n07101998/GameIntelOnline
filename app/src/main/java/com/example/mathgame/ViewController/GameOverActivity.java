@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 
 import com.example.mathgame.Model.User;
+import com.example.mathgame.Network.APIServer;
+import com.example.mathgame.Network.RetrofitClient;
 import com.example.mathgame.R;
 import com.example.mathgame.Util.Util;
 import com.facebook.share.model.SharePhoto;
@@ -27,19 +29,37 @@ import com.facebook.share.widget.ShareDialog;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GameOverActivity extends AppCompatActivity {
 
-    TextView txtPoint,txtTop;
-    ImageButton btnReplay,btnBack,btnShare;
+    TextView txtPoint, txtTop;
+    ImageButton btnReplay, btnBack, btnShare;
     int point;
     ShareDialog shareDialog;
+    Dialog dialog;
     int top;
+    Button btnok;
+    EditText edtNameUser;
+    ArrayList<User> arrAllUser = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  FacebookSdk.sdkInitialize(getApplicationContext());
+        //  FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_game_over);
+        getKeyHash();
+        init();
+        getAllUser();
+        addEvents();
+    }
+
+    private void getKeyHash() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.example.mathfastgame",
@@ -49,87 +69,113 @@ public class GameOverActivity extends AppCompatActivity {
                 md.update(signature.toByteArray());
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        }  catch (NoSuchAlgorithmException e) {
-            Log.d("ggfg", "onCreate: "+e.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.d("ggfg", "onCreate: " + e.toString());
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Log.d("ggfg", "onCreate: "+e.toString());
+            Log.d("ggfg", "onCreate: " + e.toString());
         }
-        init();
     }
 
     private void init() {
-        point=getIntent().getIntExtra("point",-1);
-        txtPoint=findViewById(R.id.txt_point);
-        txtTop=findViewById(R.id.txt_top);
-        btnReplay=findViewById(R.id.btn_replay);
-        btnBack=findViewById(R.id.btn_back);
-        btnShare=findViewById(R.id.btn_share);
-        txtPoint.setText(point+"");
-        addEvents();
-//        if (Util.arrUser.size()<=5){
-//            addUser();
-//        }else {
-//            processTop();
-//        }
-        for (int i = 0; i < Util.arrUser.size() ; i++) {
-            if (point>Util.arrUser.get(i).getPoint()){
-                top=(i+1);
-                txtTop.setText(top+"");
+        point = getIntent().getIntExtra("point", -1);
+        txtPoint = findViewById(R.id.txt_point);
+        txtTop = findViewById(R.id.txt_top);
+        btnReplay = findViewById(R.id.btn_replay);
+        btnBack = findViewById(R.id.btn_back);
+        btnShare = findViewById(R.id.btn_share);
+        txtPoint.setText(point + "");
+    }
+
+    private void processTop() {
+        for (int i = 0; i < 5; i++) {
+            if (point > arrAllUser.get(i).getPoint()) {
+                addUser();
+                break;
+            }
+        }
+        for (int i = 0; i < arrAllUser.size(); i++) {
+            if (point > arrAllUser.get(i).getPoint()) {
+                top = (i + 1);
+                txtTop.setText(top + "");
 
                 break;
 
-            }else {
+            } else {
                 Log.d("fgg", "init: ");
-                top=Util.arrUser.size();
-                txtTop.setText(top+"");
+                top = arrAllUser.size();
+                txtTop.setText(top + "");
             }
         }
-
-
-
     }
 
-//    private void processTop() {
-//        for (int i = 0; i < 5; i++) {
-//            if (point>Util.arrUser.get(i).getPoint()){
-//                addUser();
-//                break;
-//
-//            }
-//        }
-//    }
+    void getAllUser() {
+        Util.showCatLoading().show(getSupportFragmentManager(), "");
+        RetrofitClient.getInstace().create(APIServer.class).getAllUser().enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                Util.showCatLoading().dismiss();
+                arrAllUser.addAll(response.body());
+                processTop();
+            }
 
-//    private void addUser() {
-//        final Dialog dialog=new Dialog(this);
-//        dialog.setContentView(R.layout.infor_user);
-//        dialog.setCancelable(false);
-//        btnok=dialog.findViewById(R.id.btn_ok);
-//        edtNameUser=dialog.findViewById(R.id.edt_name_user);
-//        dialog.show();
-//        btnok.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                User user=new User();
-//                user.setNameUser(edtNameUser.getText().toString());
-//                user.setPoint(point);
-//                if (userDataSource.insertUser(user)>0){
-//                    Toast.makeText(GameOverActivity.this,"thêm thành công",Toast.LENGTH_SHORT).show();
-//                    dialog.dismiss();
-//                }else {
-//                    Toast.makeText(GameOverActivity.this,"xảy ra lỗi",Toast.LENGTH_SHORT).show();
-//                    dialog.dismiss();
-//                }
-//            }
-//        });
-//    }
+            @Override
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                Util.showCatLoading().dismiss();
+            }
+        });
+    }
+
+    private void addUser() {
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.infor_user);
+        dialog.setCancelable(false);
+        btnok = dialog.findViewById(R.id.btn_ok);
+        edtNameUser = dialog.findViewById(R.id.edt_name_user);
+        dialog.show();
+        btnok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!edtNameUser.getText().toString().isEmpty()) {
+                    User user = new User();
+                    user.setUsername(edtNameUser.getText().toString());
+                    user.setPoint(point);
+                    HashMap<String, String> data = new HashMap<>();
+                    data.put("username", user.getUsername());
+                    data.put("point", user.getPoint() + "");
+                    insertUser(data);
+                } else {
+                    Util.showToast("Nhập đầy đủ thông!", GameOverActivity.this);
+                }
+
+            }
+        });
+    }
+
+    private void insertUser(HashMap<String, String> data) {
+        RetrofitClient.getInstace().create(APIServer.class).insertUser(data).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.body().trim().equals("success")) {
+                    dialog.dismiss();
+                    Util.showToast("Thêm thành công", GameOverActivity.this);
+                } else {
+                    Util.showToast("xảy ra lỗi", GameOverActivity.this);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("ydh", "onFailure: " + t.toString());
+            }
+        });
+    }
 
     private void addEvents() {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(GameOverActivity.this,HomeActivity.class);
+                Intent intent = new Intent(GameOverActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -140,12 +186,12 @@ public class GameOverActivity extends AppCompatActivity {
         btnReplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(GameOverActivity.this,MainActivity.class);
+                Intent intent = new Intent(GameOverActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-        shareDialog=new ShareDialog(this);
+        shareDialog = new ShareDialog(this);
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -19,7 +19,6 @@ import com.example.mathgame.Database.GameDataSoucre;
 import com.example.mathgame.Model.Game;
 import com.example.mathgame.R;
 import com.example.mathgame.Util.AppConfig;
-import com.example.mathgame.Util.Util;
 import com.example.mathgame.ViewController.Base.BaseActivity;
 
 import java.util.ArrayList;
@@ -53,7 +52,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private void addEvents() {
-
+        btnTrue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processLogic("1");
+            }
+        });
+        btnFalse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processLogic("0");
+            }
+        });
     }
 
     @Override
@@ -87,18 +97,7 @@ public class MainActivity extends BaseActivity {
         txtPoint = findViewById(R.id.txt_point);
         btnFalse = findViewById(R.id.btn_false);
         btnTrue = findViewById(R.id.btn_true);
-        btnTrue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processLogic("1");
-            }
-        });
-        btnFalse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               processLogic("0");
-            }
-        });
+
     }
 
     private void plusPoint() {
@@ -154,6 +153,14 @@ public class MainActivity extends BaseActivity {
                         count--;
                         pbCount.setProgress(count);
                         if (count==0 && !isGameOver){
+                            if (mediaPlayer!=null){
+                                mediaPlayer.stop();
+                                mediaPlayer=null;
+                            }
+                            if (AppConfig.isSound(MainActivity.this)){
+                                mediaPlayer=MediaPlayer.create(MainActivity.this,R.raw.gameover);
+                                mediaPlayer.start();
+                            }
                             processGameOver();
                             isGameOver=true;
                         }
@@ -162,6 +169,6 @@ public class MainActivity extends BaseActivity {
             }
         };
         timer=new Timer();
-        timer.schedule(timerTask,0,150);
+        timer.schedule(timerTask,0,200);
     }
 }
