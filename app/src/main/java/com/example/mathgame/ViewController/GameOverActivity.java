@@ -37,7 +37,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GameOverActivity extends AppCompatActivity {
-
     TextView txtPoint, txtTop;
     ImageButton btnReplay, btnBack, btnShare;
     int point;
@@ -88,12 +87,14 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     private void processTop() {
+        // thêm vào top 5
         for (int i = 0; i < 5; i++) {
             if (point > arrAllUser.get(i).getPoint()) {
                 addUser();
                 break;
             }
         }
+        // xử lý top
         for (int i = 0; i < arrAllUser.size(); i++) {
             if (point > arrAllUser.get(i).getPoint()) {
                 top = (i + 1);

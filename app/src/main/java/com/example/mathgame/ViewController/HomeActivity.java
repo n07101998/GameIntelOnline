@@ -114,6 +114,14 @@ public class HomeActivity extends BaseActivity {
 
             }
         });
+
+        btnInfor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(HomeActivity.this,InforGameActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void sateSound() {

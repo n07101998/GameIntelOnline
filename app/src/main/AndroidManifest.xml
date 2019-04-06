@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mathgame">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,11 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewController.Rank.RankActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".ViewController.GameOverActivity" android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".ViewController.HomeActivity"
+        <activity android:name=".ViewController.InforGameActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ViewController.Rank.RankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ViewController.GameOverActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ViewController.HomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,15 +30,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewController.MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ViewController.MainActivity"
+            android:screenOrientation="portrait" />
 
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id1" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id1"/>
-        <provider android:authorities="com.facebook.app.FacebookContentProvider445842192823490"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider445842192823490"
+            android:exported="true" />
     </application>
 
 </manifest>
