@@ -16,7 +16,6 @@ import com.example.mathgame.R;
 import com.example.mathgame.Util.Util;
 import com.example.mathgame.ViewController.HomeActivity;
 import com.example.mathgame.ViewController.MainActivity;
-import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.util.ArrayList;
 
@@ -53,7 +52,7 @@ public class RankActivity extends AppCompatActivity {
 
     private void getTopUser() {
        Util.showCatLoading().show(getSupportFragmentManager(),"");
-        RetrofitClient.getInstace().create(APIServer.class).getTopUser().enqueue(new Callback<ArrayList<User>>() {
+        RetrofitClient.getInstane().create(APIServer.class).getTopUser().enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
                 Util.showCatLoading().dismiss();

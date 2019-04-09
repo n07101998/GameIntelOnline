@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -45,6 +46,11 @@ public class MainActivity extends BaseActivity {
     Timer timer;
     boolean isGameOver=false;
     MediaPlayer mediaPlayer;
+    LinearLayout lnBg;
+    int posBg=0;
+    public static int answerTrue=1;
+    public static int answerFalse=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +66,13 @@ public class MainActivity extends BaseActivity {
         btnTrue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processLogic(1);
+                handleLogic(answerTrue);
             }
         });
         btnFalse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processLogic(0);
+                handleLogic(answerFalse);
             }
         });
     }
@@ -96,7 +102,7 @@ public class MainActivity extends BaseActivity {
 
     private void getAllQues() {
         Util.showCatLoading().show(getSupportFragmentManager(),"");
-        RetrofitClient.getInstace().create(APIServer.class).getAllQues().enqueue(new Callback<ArrayList<Game>>() {
+        RetrofitClient.getInstane().create(APIServer.class).getAllQues().enqueue(new Callback<ArrayList<Game>>() {
             @Override
             public void onResponse(Call<ArrayList<Game>> call, Response<ArrayList<Game>> response) {
                 Util.showCatLoading().dismiss();
@@ -106,7 +112,6 @@ public class MainActivity extends BaseActivity {
                 pos = random.nextInt(rangeRandom);
                 txtQues.setText(arrData.get(pos).getQuestion());
             }
-
             @Override
             public void onFailure(Call<ArrayList<Game>> call, Throwable t) {
                 Util.showCatLoading().dismiss();
@@ -122,6 +127,7 @@ public class MainActivity extends BaseActivity {
         txtPoint = findViewById(R.id.txt_point);
         btnFalse = findViewById(R.id.btn_false);
         btnTrue = findViewById(R.id.btn_true);
+        lnBg=findViewById(R.id.ln_bg);
 
     }
 
@@ -129,35 +135,51 @@ public class MainActivity extends BaseActivity {
         point++;
         txtPoint.setText(point + "");
     }
-    void processLogic(int answer){
+    void handleLogic(int answer){
+        // cho dùng phát âm thanh khi chuyển sang câu tiếp theo
         if (mediaPlayer!=null){
             mediaPlayer.stop();
             mediaPlayer=null;
         }
-        if (arrData.get(pos).getAnswer()==answer) {
+        // nếu chọn đúng đáp án
+        if (arrData.get(pos).getAnswer()==answer && !isGameOver) {
+            //hủy luồng cũ
             if(timer != null) {
                 timer.cancel();
                 timer = null;
             }
             count=11;
+            //khởi tạo lại timer
             processCountDown();
+            // xử lý cộng điểm
             plusPoint();
+            //random câu hỏi
             pos = random.nextInt(rangeRandom);
             txtQues.setText(arrData.get(pos).getQuestion());
-
-            if (AppConfig.isSound(this)){
-                mediaPlayer=MediaPlayer.create(this,R.raw.score);
-                mediaPlayer.start();
-            }
-
-
+            handleSound(R.raw.score);
+            // đổi màu backgroup
+            setColorBackgroup();
         }else{
-            if (AppConfig.isSound(this)){
-                mediaPlayer=MediaPlayer.create(this,R.raw.gameover);
-                mediaPlayer.start();
-            }
+            handleSound(R.raw.gameover);
             isGameOver=true;
             processGameOver();
+        }
+    }
+
+    private void setColorBackgroup() {
+        String [] arrBg=getResources().getStringArray(R.array.arrBackgroup);
+        if (posBg==arrBg.length-1)
+            posBg=0;
+        lnBg.setBackgroundColor(Color.parseColor(arrBg[posBg]));
+        posBg++;
+
+    }
+
+    // kiểm tra trạng thái âm thanh và phát âm thanh nếu issound ==true
+    private void handleSound(int sound) {
+        if (AppConfig.isSound(this)){
+            mediaPlayer=MediaPlayer.create(this,sound);
+            mediaPlayer.start();
         }
     }
 
@@ -194,6 +216,6 @@ public class MainActivity extends BaseActivity {
             }
         };
         timer=new Timer();
-        timer.schedule(timerTask,0,200);
+        timer.schedule(timerTask,0,170);
     }
 }

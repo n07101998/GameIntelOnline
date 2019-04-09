@@ -6,4 +6,10 @@
     <color name="colorWhite1">#fff</color>
     <color name="colorBlack1">#000</color>
     <color name="colorPurple1">#6D14FF</color>
+    <string-array name="arrBackgroup">
+        <item>#BECC00</item>
+        <item>#FF09D4</item>
+        <item>#FF1909</item>
+        <item>#0066B8</item>
+    </string-array>
 </resources>

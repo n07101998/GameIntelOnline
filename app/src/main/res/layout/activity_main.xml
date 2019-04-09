@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0C91FF"
     tools:context=".ViewController.MainActivity">
 
     <LinearLayout
+        android:id="@+id/ln_bg"
+        android:background="#0C91FF"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

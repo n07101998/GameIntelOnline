@@ -15,9 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
+import com.example.mathgame.Model.Game;
 import com.example.mathgame.Model.User;
 import com.example.mathgame.Network.APIServer;
 import com.example.mathgame.Network.RetrofitClient;
@@ -112,7 +112,7 @@ public class GameOverActivity extends AppCompatActivity {
 
     void getAllUser() {
         Util.showCatLoading().show(getSupportFragmentManager(), "");
-        RetrofitClient.getInstace().create(APIServer.class).getAllUser().enqueue(new Callback<ArrayList<User>>() {
+        RetrofitClient.getInstane().create(APIServer.class).getAllUser().enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
                 Util.showCatLoading().dismiss();
@@ -123,6 +123,7 @@ public class GameOverActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
                 Util.showCatLoading().dismiss();
+                Util.showToast("Xảy ra lỗi", GameOverActivity.this);
             }
         });
     }
@@ -154,7 +155,7 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     private void insertUser(HashMap<String, String> data) {
-        RetrofitClient.getInstace().create(APIServer.class).insertUser(data).enqueue(new Callback<String>() {
+        RetrofitClient.getInstane().create(APIServer.class).insertUser(data).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.body().trim().equals("success")) {
