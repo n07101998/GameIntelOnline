@@ -6,8 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 
 import com.example.mathgame.R;
+import com.example.mathgame.ViewController.Base.BaseActivity;
 
-public class InforGameActivity extends AppCompatActivity {
+public class InforGameActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

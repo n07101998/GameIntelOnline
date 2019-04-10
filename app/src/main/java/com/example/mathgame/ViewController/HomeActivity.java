@@ -140,10 +140,6 @@ public class HomeActivity extends BaseActivity {
         btnInfor = findViewById(R.id.btn_infor);
         btnPlay = findViewById(R.id.btn_play);
         btnRank = findViewById(R.id.btn_rank);
-        AssetDatabaseOpenHelper db = new AssetDatabaseOpenHelper(this);
-        db.processCopy();
-
-
         Log.d("fffr", "init: ");
     }
 

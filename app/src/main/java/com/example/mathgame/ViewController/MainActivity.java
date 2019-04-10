@@ -37,19 +37,19 @@ public class MainActivity extends BaseActivity {
     TextSwitcher txtQues;
     TextView txtPoint;
     ImageButton btnTrue, btnFalse;
-    ArrayList<Game> arrData=new ArrayList<>();
+    ArrayList<Game> arrData = new ArrayList<>();
     Random random = new Random();
     int point = 0;
     int pos;
     int rangeRandom;
-    int count=10;
+    int count = 10;
     Timer timer;
-    boolean isGameOver=false;
+    boolean isGameOver = false;
     MediaPlayer mediaPlayer;
     LinearLayout lnBg;
-    int posBg=0;
-    public static int answerTrue=1;
-    public static int answerFalse=0;
+    int posBg = 0;
+    public static int answerTrue = 1;
+    public static int answerFalse = 0;
 
 
     @Override
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        isGameOver=false;
+        isGameOver = false;
     }
 
     private void setUpView() {
@@ -101,21 +101,22 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getAllQues() {
-        Util.showCatLoading().show(getSupportFragmentManager(),"");
+        Util.showCatLoading().show(getSupportFragmentManager(), "");
         RetrofitClient.getInstane().create(APIServer.class).getAllQues().enqueue(new Callback<ArrayList<Game>>() {
             @Override
             public void onResponse(Call<ArrayList<Game>> call, Response<ArrayList<Game>> response) {
                 Util.showCatLoading().dismiss();
                 arrData.clear();
                 arrData.addAll(response.body());
-                rangeRandom=arrData.size();
+                rangeRandom = arrData.size();
                 pos = random.nextInt(rangeRandom);
                 txtQues.setText(arrData.get(pos).getQuestion());
             }
+
             @Override
             public void onFailure(Call<ArrayList<Game>> call, Throwable t) {
                 Util.showCatLoading().dismiss();
-                Util.showToast(t.toString(),MainActivity.this);
+                Util.showToast(t.toString(), MainActivity.this);
 
             }
         });
@@ -127,7 +128,7 @@ public class MainActivity extends BaseActivity {
         txtPoint = findViewById(R.id.txt_point);
         btnFalse = findViewById(R.id.btn_false);
         btnTrue = findViewById(R.id.btn_true);
-        lnBg=findViewById(R.id.ln_bg);
+        lnBg = findViewById(R.id.ln_bg);
 
     }
 
@@ -135,20 +136,21 @@ public class MainActivity extends BaseActivity {
         point++;
         txtPoint.setText(point + "");
     }
-    void handleLogic(int answer){
+
+    void handleLogic(int answer) {
         // cho dùng phát âm thanh khi chuyển sang câu tiếp theo
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
-            mediaPlayer=null;
+            mediaPlayer = null;
         }
         // nếu chọn đúng đáp án
-        if (arrData.get(pos).getAnswer()==answer && !isGameOver) {
+        if (arrData.get(pos).getAnswer() == answer && !isGameOver) {
             //hủy luồng cũ
-            if(timer != null) {
+            if (timer != null && !isGameOver) {
                 timer.cancel();
                 timer = null;
             }
-            count=11;
+            count = 11;
             //khởi tạo lại timer
             processCountDown();
             // xử lý cộng điểm
@@ -159,17 +161,17 @@ public class MainActivity extends BaseActivity {
             handleSound(R.raw.score);
             // đổi màu backgroup
             setColorBackgroup();
-        }else{
+        } else {
             handleSound(R.raw.gameover);
-            isGameOver=true;
+            isGameOver = true;
             processGameOver();
         }
     }
 
     private void setColorBackgroup() {
-        String [] arrBg=getResources().getStringArray(R.array.arrBackgroup);
-        if (posBg==arrBg.length-1)
-            posBg=0;
+        String[] arrBg = getResources().getStringArray(R.array.arrBackgroup);
+        if (posBg == arrBg.length - 1)
+            posBg = 0;
         lnBg.setBackgroundColor(Color.parseColor(arrBg[posBg]));
         posBg++;
 
@@ -177,21 +179,21 @@ public class MainActivity extends BaseActivity {
 
     // kiểm tra trạng thái âm thanh và phát âm thanh nếu issound ==true
     private void handleSound(int sound) {
-        if (AppConfig.isSound(this)){
-            mediaPlayer=MediaPlayer.create(this,sound);
+        if (AppConfig.isSound(this)) {
+            mediaPlayer = MediaPlayer.create(this, sound);
             mediaPlayer.start();
         }
     }
 
     private void processGameOver() {
-        Intent intent=new Intent(MainActivity.this,GameOverActivity.class);
-        intent.putExtra("point",point);
+        Intent intent = new Intent(MainActivity.this, GameOverActivity.class);
+        intent.putExtra("point", point);
         startActivity(intent);
         finish();
     }
 
-    void processCountDown(){
-        TimerTask timerTask=new TimerTask() {
+    void processCountDown() {
+        TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
@@ -199,23 +201,26 @@ public class MainActivity extends BaseActivity {
                     public void run() {
                         count--;
                         pbCount.setProgress(count);
-                        if (count==0 && !isGameOver){
-                            if (mediaPlayer!=null){
+                        if (count == 0 && !isGameOver) {
+                            isGameOver = true;
+                            if (mediaPlayer != null) {
                                 mediaPlayer.stop();
-                                mediaPlayer=null;
+                                mediaPlayer = null;
                             }
-                            if (AppConfig.isSound(MainActivity.this)){
-                                mediaPlayer=MediaPlayer.create(MainActivity.this,R.raw.gameover);
+                            if (AppConfig.isSound(MainActivity.this)) {
+                                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.gameover);
                                 mediaPlayer.start();
                             }
                             processGameOver();
-                            isGameOver=true;
+
                         }
                     }
                 });
             }
         };
-        timer=new Timer();
-        timer.schedule(timerTask,0,170);
+
+        timer = new Timer();
+        timer.schedule(timerTask, 0, 170);
+
     }
 }

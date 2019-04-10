@@ -1,6 +1,9 @@
 package com.example.mathgame.ViewController;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -26,6 +29,7 @@ import com.example.mathgame.Util.Util;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
+import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GameOverActivity extends AppCompatActivity {
-    TextView txtPoint, txtTop;
+    TextView txtPoint, txtTop, txtBest;
     ImageButton btnReplay, btnBack, btnShare;
     int point;
     ShareDialog shareDialog;
@@ -79,6 +83,7 @@ public class GameOverActivity extends AppCompatActivity {
     private void init() {
         point = getIntent().getIntExtra("point", -1);
         txtPoint = findViewById(R.id.txt_point);
+        txtBest=findViewById(R.id.txt_best);
         txtTop = findViewById(R.id.txt_top);
         btnReplay = findViewById(R.id.btn_replay);
         btnBack = findViewById(R.id.btn_back);
@@ -87,6 +92,7 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     private void processTop() {
+
         // thêm vào top 5
         for (int i = 0; i < 5; i++) {
             if (point > arrAllUser.get(i).getPoint()) {
@@ -111,13 +117,32 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     void getAllUser() {
-        Util.showCatLoading().show(getSupportFragmentManager(), "");
+        final CatLoadingView dialog=new CatLoadingView();
+        dialog.show(getSupportFragmentManager(),"");
         RetrofitClient.getInstane().create(APIServer.class).getAllUser().enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                Util.showCatLoading().dismiss();
-                arrAllUser.addAll(response.body());
-                processTop();
+                try {
+                    Log.d("fff", "onResponse: "+response.body());
+                    dialog.dismiss();
+                    arrAllUser.addAll(response.body());
+                    txtBest.setText(response.body().get(0).getPoint()+"");
+                    processTop();
+                }catch (Exception e){
+                    AlertDialog.Builder builder=new AlertDialog.Builder(GameOverActivity.this);
+                    builder.setTitle("Cảnh báo!");
+                    builder.setMessage("Xảy ra lỗi kết nối");
+                    builder.setIcon(R.drawable.ic_warning_black_24dp);
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getAllUser();
+                        }
+                    });
+                    builder.show();
+                }
+
             }
 
             @Override
